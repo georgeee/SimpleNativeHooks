@@ -13,11 +13,20 @@ public class OSXNativeMouseEvent extends NativeHookMouseEvent {
 
 	private int code;
 	private int x, y;
+	private int delta;
 
 	private OSXNativeMouseEvent(int code, int x, int y) {
+        this(code, x, y, 0);
+    }
+	private OSXNativeMouseEvent(int code, int x, int y, int delta) {
 		this.code = code;
 		this.x = x;
 		this.y = y;
+		this.delta = 0;
+	}
+
+	public static OSXNativeMouseEvent of(int code, int x, int y, int delta) {
+		return new OSXNativeMouseEvent(code, x, y, delta);
 	}
 
 	public static OSXNativeMouseEvent of(int code, int x, int y) {
@@ -28,7 +37,7 @@ public class OSXNativeMouseEvent extends NativeHookMouseEvent {
 	public NativeMouseEvent convertEvent() throws InvalidMouseEventException {
 		int x = this.x;
 		int y = this.y;
-		State s = State.UNKNOWN;
+		State s;
 		int button = 0;
 
 		switch (code) {
@@ -38,7 +47,7 @@ public class OSXNativeMouseEvent extends NativeHookMouseEvent {
 			break;
 		case 4:
 			s = State.RELEASED;
-			button = KeyEvent.BUTTON3_DOWN_MASK;
+			button = KeyEvent.BUTTON1_DOWN_MASK;
 			break;
 		case 5:
 			s = State.PRESSED;
@@ -61,6 +70,6 @@ public class OSXNativeMouseEvent extends NativeHookMouseEvent {
 			throw new InvalidMouseEventException("Unknown code '" + code + "' for OSX mouse event.");
 		}
 
-		return NativeMouseEvent.of(x, y, s, button);
+		return NativeMouseEvent.of(x, y, s, button, delta);
 	}
 }

@@ -250,7 +250,7 @@ public class OSXNativeKeyEvent extends NativeHookKeyEvent {
 			c = KeyEvent.VK_DEAD_TILDE;
 			break;
 		case 0x33:
-			c = KeyEvent.VK_DELETE;
+			c = KeyEvent.VK_BACK_SPACE;
 			break;
 		case 0x35:
 			c = KeyEvent.VK_ESCAPE;
