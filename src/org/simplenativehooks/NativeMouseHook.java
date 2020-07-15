@@ -40,6 +40,10 @@ public class NativeMouseHook extends AbstractGlobalMouseListener implements Nati
 			if (!mouseReleased.apply(event)) {
 				LOGGER.warning("Failed to process mouse release event.");
 			}
+		} else if (event.getState().equals(NativeMouseEvent.State.SCROLLED)) {
+			if (!mouseScrolled.apply(event)) {
+				LOGGER.warning("Failed to process nouse scroll event");
+			}
 		} else { // Drop
 			LOGGER.finer("Silently dropping mouse event with unknown state.");
 		}

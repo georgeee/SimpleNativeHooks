@@ -89,7 +89,8 @@ CGEventRef myCGEventCallback (CGEventTapProxy proxy, CGEventType type, CGEventRe
   }
 
   if (type == kCGEventScrollWheel) {
-    printf("E:%d\n", eventCode);
+    int64_t lineDelta = CGEventGetIntegerValueField(event, kCGScrollWheelEventDeltaAxis1);
+    printf("E:%d,d:%d\n", eventCode, lineDelta);
   }
 
   fflush(stdout);

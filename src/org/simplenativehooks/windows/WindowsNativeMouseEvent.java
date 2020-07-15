@@ -10,17 +10,22 @@ import org.simplenativehooks.events.NativeMouseEvent.State;
 class WindowsNativeMouseEvent extends NativeHookMouseEvent {
 	private final int x;
 	private final int y;
+	private final int delta;
 
 	private final int code;
 
-	private WindowsNativeMouseEvent(int x, int y, int code) {
+	private WindowsNativeMouseEvent(int x, int y, int code, int delta) {
 		this.x = x;
 		this.y = y;
 		this.code = code;
+		this.delta = delta;
 	}
 
 	protected static WindowsNativeMouseEvent of(int x, int y, int code) {
-		return new WindowsNativeMouseEvent(x, y, code);
+		return of(x, y, code, 0);
+    }
+	protected static WindowsNativeMouseEvent of(int x, int y, int code, int delta) {
+		return new WindowsNativeMouseEvent(x, y, code, delta);
 	}
 
 	@Override
@@ -65,6 +70,6 @@ class WindowsNativeMouseEvent extends NativeHookMouseEvent {
 			throw new InvalidMouseEventException("Unknown code " + code + ".");
 		}
 
-		return NativeMouseEvent.of(x, y, s, button);
+		return NativeMouseEvent.of(x, y, s, button, delta);
 	}
 }

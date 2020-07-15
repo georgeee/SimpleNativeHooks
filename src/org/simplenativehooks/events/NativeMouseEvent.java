@@ -22,15 +22,22 @@ public class NativeMouseEvent {
 	// java.awt.event.InputEvent.BUTTON3_DOWN_MASK
 	private int button;
 
-	private NativeMouseEvent(int x, int y, State state, int button) {
+	// Scroll delta
+	private int delta;
+
+	private NativeMouseEvent(int x, int y, State state, int button, int delta) {
 		this.x = x;
 		this.y = y;
 		this.state = state;
 		this.button = button;
+		this.delta = delta;
 	}
 
 	public static NativeMouseEvent of(int x, int y, State state, int button) {
-		return new NativeMouseEvent(x, y, state, button);
+	    return of(x, y, state, button, 0);
+    }
+	public static NativeMouseEvent of(int x, int y, State state, int button, int delta) {
+		return new NativeMouseEvent(x, y, state, button, delta);
 	}
 
 	public int getX() {
@@ -47,5 +54,9 @@ public class NativeMouseEvent {
 
 	public int getButton() {
 		return button;
+	}
+
+	public int getDelta(){
+		return delta;
 	}
 }

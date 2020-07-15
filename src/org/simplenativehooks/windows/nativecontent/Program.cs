@@ -71,7 +71,8 @@ namespace RepeatHook
                 MSLLHOOKSTRUCT mouseLowLevelHook = (MSLLHOOKSTRUCT)Marshal.PtrToStructure(lParam, typeof(MSLLHOOKSTRUCT));
                 int x = mouseLowLevelHook.pt.x;
                 int y = mouseLowLevelHook.pt.y;
-                Console.WriteLine("M:" + x + "," + y + ",P:" + wParam);
+                uint data = mouseLowLevelHook.mouseData;
+                Console.WriteLine("M:" + x + "," + y + ",P:" + wParam + ",D:" + data);
             }
 
             return CallNextHookEx(_mouseHookID, nCode, wParam, lParam);

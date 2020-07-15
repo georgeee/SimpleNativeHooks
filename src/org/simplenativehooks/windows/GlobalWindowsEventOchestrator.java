@@ -18,7 +18,7 @@ public class GlobalWindowsEventOchestrator extends AbstractNativeHookEventProces
 	private static final File EXECUTABLE_FILE = NativeHookBootstrapResources.getNativeHookExecutable();
 
 	private static final Pattern KEY_PATTERN = Pattern.compile("^K:([0-9]+?),P:([0-9]+)$");
-	private static final Pattern MOUSE_PATTERN = Pattern.compile("^M:(-?[0-9]+?),(-?[0-9]+?),P:([0-9]+)$");
+	private static final Pattern MOUSE_PATTERN = Pattern.compile("^M:(-?[0-9]+?),(-?[0-9]+?),P:([0-9]+),D:([0-9]+)$");
 
 	private GlobalWindowsEventOchestrator() {}
 
@@ -67,18 +67,21 @@ public class GlobalWindowsEventOchestrator extends AbstractNativeHookEventProces
 			String xString = mouseMatch.group(1);
 			String yString = mouseMatch.group(2);
 			String codeString = mouseMatch.group(3);
+			String dataString = mouseMatch.group(4);
 
 			int x, y, code;
+			long data;
 			try {
 				x = Integer.parseInt(xString);
 				y = Integer.parseInt(yString);
 				code = Integer.parseInt(codeString);
+				data = Long.parseLong(dataString);
 			} catch (NumberFormatException e) {
 				LOGGER.log(Level.SEVERE, "Unexpected number format when parsing hook output.", e);
 				return;
 			}
-
-			NativeHookGlobalEventPublisher.of().publishMouseEvent(WindowsNativeMouseEvent.of(x, y, code));
+			int delta = (byte) data >> 8;
+			NativeHookGlobalEventPublisher.of().publishMouseEvent(WindowsNativeMouseEvent.of(x, y, code, delta));
 			return;
 		}
 

@@ -19,7 +19,7 @@ public class GlobalOSXEventOchestrator extends AbstractNativeHookEventProcessor 
 	private static final File EXECUTABLE_FILE = NativeHookBootstrapResources.getNativeHookExecutable();
 
 	private static final Pattern MOUSE_EVENT = Pattern.compile("^E:([0-9]),X:([0-9]+?),Y:([0-9]+)$");
-	private static final Pattern MOUSE_SCROLL_EVENT = Pattern.compile("^E:([0-9])$");
+	private static final Pattern MOUSE_SCROLL_EVENT = Pattern.compile("^E:([0-9]),d:(-?[0-9]+)$");
 	private static final Pattern KEY_EVENT = Pattern.compile("^E:([0-9]),C:([0-9]+)$");
 	private static final Pattern MODIFIER_EVENT = Pattern.compile("^E:([0-9]),C:([0-9]+?),M:([0-9]+)$");
 
@@ -69,16 +69,19 @@ public class GlobalOSXEventOchestrator extends AbstractNativeHookEventProcessor 
 		Matcher mouseScrollMatch = MOUSE_SCROLL_EVENT.matcher(line);
 		if (mouseScrollMatch.find()) {
 			String codeString = mouseScrollMatch.group(1);
+			String deltaString = mouseScrollMatch.group(2);
 			int code;
+			int delta;
 			try {
 				code = Integer.parseInt(codeString);
+				delta = Integer.parseInt(deltaString);
 			} catch (NumberFormatException e) {
 				LOGGER.log(Level.WARNING, "Unexpected number format exception when parsing output.", e);
 				return;
 			}
 
 			Point p = MouseInfo.getPointerInfo().getLocation();
-			NativeHookGlobalEventPublisher.of().publishMouseEvent(OSXNativeMouseEvent.of(code, p.x, p.y));
+			NativeHookGlobalEventPublisher.of().publishMouseEvent(OSXNativeMouseEvent.of(code, p.x, p.y, delta));
 			return;
 		}
 
