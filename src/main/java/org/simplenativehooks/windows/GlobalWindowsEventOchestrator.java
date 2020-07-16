@@ -80,7 +80,7 @@ public class GlobalWindowsEventOchestrator extends AbstractNativeHookEventProces
 				LOGGER.log(Level.SEVERE, "Unexpected number format when parsing hook output.", e);
 				return;
 			}
-			int delta = (byte) data >> 8;
+			int delta = - ((short) (data >> 16)) / 120;
 			NativeHookGlobalEventPublisher.of().publishMouseEvent(WindowsNativeMouseEvent.of(x, y, code, delta));
 			return;
 		}

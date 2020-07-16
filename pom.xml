@@ -6,7 +6,7 @@
 
     <groupId>simplenativehooks</groupId>
     <artifactId>simplenativehooks</artifactId>
-    <version>0.4</version>
+    <version>0.5</version>
     <dependencies>
     </dependencies>
 
@@ -23,5 +23,4 @@
             </plugin>
         </plugins>
     </build>
-
 </project>
